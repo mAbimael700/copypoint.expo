@@ -1,12 +1,12 @@
 import {useMutation, useQueryClient} from '@tanstack/react-query'
-import {useAuth} from "~/features/auth/hooks/useAuth";
+import {useAuth} from '~/features/auth/store/AuthStore'
 import {useStoreContext} from "~/features/stores/context/useStoreContext";
 import {StoreCreationDTO, StoreResponse} from "~/features/stores/types/Store.type";
 import StoreService from "~/features/stores/services/StoreService";
 
 
 export const useCreateStore = () => {
-    const {token: accessToken} = useAuth()
+    const {accessToken} = useAuth()
     const queryClient = useQueryClient()
     const {setActiveStore} = useStoreContext()
 

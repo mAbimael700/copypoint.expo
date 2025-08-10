@@ -1,37 +1,39 @@
-import { Tabs } from 'expo-router'
-import { Ionicons } from '@expo/vector-icons'
+import {Tabs} from 'expo-router'
+import {Ionicons} from '@expo/vector-icons'
+import {BadgeDollarSign, House, SettingsIcon} from "lucide-react-native";
 
 export default function AppLayout() {
     return (
-        <Tabs screenOptions={{ headerShown: false }}>
+        <Tabs screenOptions={{headerShown: false}}>
             <Tabs.Screen
-                name="index"  // Cambiado de "sales/index" a "index"
+                name="index" // Cambiado de "sales/index" a "index"
+                options={{
+                    title: "Home",
+                    tabBarIcon: ({size, color}) => (
+                        <House color={color} size={size} />
+                    )
+                }}
             />
 
             <Tabs.Screen
                 name="sales/index"
                 options={{
-                    title:"Sales"
+                    title: "Sales",
+                    tabBarIcon: ({size, color}) => (
+                        <BadgeDollarSign size={size} color={color}/>
+                    )
                 }}
             />
-           {/* <Tabs.Screen
-                name="profile"
-                options={{
-                    title: 'Profile',
-                    tabBarIcon: ({ color, size }) => (
-                        <Ionicons name="person" color={color} size={size} />
-                    ),
-                }}
-            />
+
             <Tabs.Screen
-                name="settings"
+                name="settings/index"
                 options={{
-                    title: 'Settings',
-                    tabBarIcon: ({ color, size }) => (
-                        <Ionicons name="settings" color={color} size={size} />
-                    ),
+                    title: "Settings",
+                    tabBarIcon: ({size, color}) => (
+                        <SettingsIcon size={size} color={color}/>
+                    )
                 }}
-            />*/}
+            />
         </Tabs>
     )
 }

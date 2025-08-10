@@ -7,7 +7,7 @@ import {
 } from '@tanstack/react-query';
 import {PageResponse} from '~/features/api/types/HttpResponse.type';
 import {CopypointCreationDTO, CopypointResponse} from '~/features/copypoints/types/Copypoint.type';
-import {useAuth} from "~/features/auth/hooks/useAuth";
+import {useAuth} from '~/features/auth/store/AuthStore'
 import CopypointService from "~/features/copypoints/services/CopypointService";
 
 
@@ -37,7 +37,7 @@ export const useCopypoints = (
     params: CopypointsQueryParams,
     options?: Omit<UseQueryOptions<PageResponse<CopypointResponse>>, 'queryKey' | 'queryFn'>
 ) => {
-    const {token: accessToken, isAuthenticated} = useAuth();
+    const {accessToken, isAuthenticated} = useAuth();
 
     return useQuery({
         // eslint-disable-next-line @tanstack/query/exhaustive-deps
@@ -68,7 +68,7 @@ export const useCreateCopypoint = (
     options?: UseMutationOptions<CopypointResponse, Error, CreateCopypointParams>
 ) => {
     const queryClient = useQueryClient();
-    const {token: accessToken} = useAuth();
+    const {accessToken} = useAuth();
 
     return useMutation({
         mutationFn: async (params: CreateCopypointParams): Promise<CopypointResponse> => {
@@ -181,7 +181,7 @@ export const useCopypointOperations = (storeId: number | string) => {
  */
 export const usePrefetchCopypoints = () => {
     const queryClient = useQueryClient();
-    const {token: accessToken} = useAuth();
+    const {accessToken} = useAuth();
 
     const prefetchCopypoints = async (storeId: number | string) => {
         if (!accessToken) return;

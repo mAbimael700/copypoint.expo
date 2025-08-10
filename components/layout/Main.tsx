@@ -14,7 +14,7 @@ export const Main = ({fixed, className, children}: MainProps) => {
         <View
             className={cn(
                 'peer-[.header-fixed]/header:mt-16',
-                'px-5 py-10',
+                'py-10 px-1',
                 fixed && 'fixed-main flex grow flex-col overflow-hidden',
                 className
             )}

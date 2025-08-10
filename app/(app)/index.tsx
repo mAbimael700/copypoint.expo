@@ -1,13 +1,14 @@
 import React from 'react';
-import {View} from "react-native";
+
 import {Text} from "~/components/ui/text";
+import {Main} from "~/components/layout/Main";
 
 const Index = () => {
     return (
-        <View>
+        <Main>
             <Text>Este es un texto
             </Text>
-        </View>
+        </Main>
     );
 };
 

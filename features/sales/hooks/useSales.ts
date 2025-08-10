@@ -2,7 +2,7 @@
 import {SaleCreationDTO, SaleProfileCreationDTO, SaleResponse, SaleStatus} from "~/features/sales/types/Sale.type";
 import {useMutation, UseMutationOptions, useQuery, useQueryClient, UseQueryOptions} from "@tanstack/react-query";
 import {PageResponse} from "~/features/api/types/HttpResponse.type";
-import {useAuth} from "~/features/auth/hooks/useAuth";
+import {useAuth} from '~/features/auth/store/AuthStore'
 import SaleService from "../services/SaleService";
 import {useCopypointContext} from "~/features/copypoints/context/useCopypointContext";
 
@@ -46,7 +46,7 @@ export const useSales = (
     params?: SaleQueryParams,
     options?: Omit<UseQueryOptions<PageResponse<SaleResponse>>, 'queryKey' | 'queryFn'>
 ) => {
-    const {token: accessToken, isAuthenticated} = useAuth();
+    const {accessToken, isAuthenticated} = useAuth();
     const {currentCopypoint} = useCopypointContext();
 
     // Usar el copypoint del store si no se proporciona uno específico
@@ -82,7 +82,7 @@ export const usePendingSales = (
     params?: SaleQueryParams,
     options?: Omit<UseQueryOptions<PageResponse<SaleResponse>>, 'queryKey' | 'queryFn'>
 ) => {
-    const {token: accessToken, isAuthenticated} = useAuth();
+    const {accessToken, isAuthenticated} = useAuth();
     const {currentCopypoint} = useCopypointContext();
 
     const copypointId = params?.copypointId || currentCopypoint?.id;
@@ -122,7 +122,7 @@ export const useCreateSale = (
     options?: UseMutationOptions<SaleResponse, Error, CreateSaleParams>
 ) => {
     const queryClient = useQueryClient();
-    const {token: accessToken} = useAuth();
+    const {accessToken} = useAuth();
 
     return useMutation({
         mutationFn: async (params: CreateSaleParams): Promise<SaleResponse> => {
@@ -173,7 +173,7 @@ export const useAddProfileToSale = (
     options?: UseMutationOptions<SaleResponse, Error, AddProfileToSaleParams>
 ) => {
     const queryClient = useQueryClient();
-    const {token: accessToken} = useAuth();
+    const {accessToken} = useAuth();
 
     return useMutation({
         mutationFn: async (params: AddProfileToSaleParams): Promise<SaleResponse> => {
@@ -223,7 +223,7 @@ export const useUpdateSaleStatus = (
     options?: UseMutationOptions<SaleResponse, Error, UpdateSaleStatusParams>
 ) => {
     const queryClient = useQueryClient();
-    const {token: accessToken} = useAuth();
+    const {accessToken} = useAuth();
 
     return useMutation({
         mutationFn: async (params: UpdateSaleStatusParams): Promise<SaleResponse> => {
@@ -281,6 +281,7 @@ export const useSalesOperations = (copypointId?: number | string) => {
 
     // Usar el copypoint del store si no se proporciona uno específico
     const activeCopypointId = copypointId || currentCopypoint?.id;
+    console.log(currentCopypoint)
 
     // Queries
     const salesQuery = useSales({
@@ -399,7 +400,7 @@ export const useSalesOperations = (copypointId?: number | string) => {
  */
 export const usePrefetchSales = () => {
     const queryClient = useQueryClient();
-    const {token: accessToken} = useAuth();
+    const {accessToken} = useAuth();
 
     const prefetchSales = async (copypointId: number | string) => {
         if (!accessToken) return;
