@@ -1,5 +1,5 @@
 import React from "react";
-import { Main } from "~/components/layout/Main";
+import {Main} from "~/components/layout/Main";
 import {cn} from "~/lib/utils";
 import {Text} from "~/components/ui/text";
 import {View} from "react-native";
@@ -13,12 +13,12 @@ interface FormLayoutProps {
     className?: string
 }
 
-export default function FormLayout({ children, header, description, className }: FormLayoutProps) {
+export default function FormLayout({children, header, description, className}: FormLayoutProps) {
     return (
         < >
-            <Main>
-                <View className='space-y-0.5'>
-                    <Text className='text-xl font-bold tracking-tight md:text-2xl'>
+            <Main fixed className={'flex-col gap-4'}>
+                <View className={'border-b border-muted-foreground py-2 mx-5'}>
+                    <Text className='text-3xl font-bold tracking-tight md:text-2xl'>
                         {header}
                     </Text>
                     <Text className='text-muted-foreground'>
@@ -26,11 +26,10 @@ export default function FormLayout({ children, header, description, className }:
                     </Text>
                 </View>
 
-                <View className='flex flex-1 flex-col space-y-2 overflow-y-auto md:space-y-2 lg:flex-row lg:space-y-0 lg:space-x-12'>
-                    <View className={cn('flex w-full overflow-y-auto p-1', className)}>
-                        {children}
-                    </View>
+                <View className={cn(className)}>
+                    {children}
                 </View>
+
             </Main>
         </>
     )

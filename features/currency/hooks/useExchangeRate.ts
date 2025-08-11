@@ -1,4 +1,4 @@
-import { useQuery, UseQueryResult } from '@tanstack/react-query'
+import {useQuery, UseQueryResult} from '@tanstack/react-query'
 import {useAuth} from "~/features/auth/store/AuthStore";
 import {ExchangeRateCurrencyResponse} from "~/features/currency/types/ExchangeRate.type";
 import ExchangeRateService from "~/features/currency/service/ExchangeRateService";
@@ -16,37 +16,23 @@ export const exchangeRateKeys = {
 export const useExchangeRateCodes = (
     accessToken: string
 ): UseQueryResult<ExchangeRateCurrencyResponse, Error> => {
+    // @ts-ignore
     return useQuery({
         // eslint-disable-next-line @tanstack/query/exhaustive-deps
         queryKey: exchangeRateKeys.codes(),
         queryFn: () => ExchangeRateService.getAllCodes(accessToken),
         staleTime: 1000 * 60 * 60 * 24, // 24 horas - los códigos no cambian frecuentemente
         gcTime: 1000 * 60 * 60 * 24, // 24 horas en caché
+        //cacheTime: 1000 * 60 * 60 * 24, // 24 horas en caché
+        refetchOnMount: false, // No recargar al montar
+        refetchOnWindowFocus: false, // No recargar al enfocar ventana
     })
 }
-/*
-// Hook para obtener las tasas de cambio más recientes por moneda
-export const useLatestExchangeRate = (
-  currencyIso: string,
-  options?: {
-    enabled?: boolean
-    refetchInterval?: number
-    staleTime?: number
-  }
-): UseQueryResult<any, Error> => {
-  return useQuery({
-    queryKey: exchangeRateKeys.latestByCurrency(currencyIso),
-    queryFn: () => ExchangeRateService.getLastestByCurrency(currencyIso),
-    enabled: options?.enabled ?? Boolean(currencyIso), // Solo ejecutar si hay currencyIso
-    staleTime: options?.staleTime ?? 1000 * 60 * 5, // 5 minutos por defecto
-    gcTime: 1000 * 60 * 10, // 10 minutos en caché
-    refetchInterval: options?.refetchInterval, // Opcional para actualizaciones automáticas
-  })
-}*/
+
 
 // Hook compuesto para casos donde necesites ambos datos
 export const useExchangeRateData = () => {
-    const { accessToken } = useAuth()
+    const {accessToken} = useAuth()
     const codesQuery = useExchangeRateCodes(accessToken)
 
     const refetch = () => {

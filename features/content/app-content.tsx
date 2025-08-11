@@ -6,9 +6,11 @@ import {StatusBar} from "expo-status-bar";
 import {PortalHost} from "@rn-primitives/portal";
 import {NAV_THEME} from "~/lib/constants";
 import {Text} from "~/components/ui/text";
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {BottomSheetModalProvider} from "~/components/ui/bottom-sheet";
 
 import * as React from "react";
-import {useEffect, useState, useRef} from "react";
+import {useEffect, useRef, useState} from "react";
 import {Stack, useRouter, useSegments} from "expo-router";
 
 const LIGHT_THEME: Theme = {
@@ -21,7 +23,7 @@ const DARK_THEME: Theme = {
 };
 
 function AppContent() {
-    const { isDarkColorScheme } = useColorScheme();
+    const {isDarkColorScheme} = useColorScheme();
     const auth = useAuth();
     const segments = useSegments();
     const router = useRouter();
@@ -91,7 +93,7 @@ function AppContent() {
     if (!isNavigationReady || auth.isLoading || !auth.isInitialized) {
         return (
             <View className="flex-1 justify-center items-center bg-background">
-                <ActivityIndicator size="large" className="text-primary" />
+                <ActivityIndicator size="large" className="text-primary"/>
                 <Text className="text-muted-foreground mt-4">
                     {!auth.isInitialized ? 'Inicializando...' : 'Cargando...'}
                 </Text>
@@ -100,14 +102,18 @@ function AppContent() {
     }
 
     return (
-        <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
-            <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
-            <Stack screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="(auth)" />
-                <Stack.Screen name="(app)" />
-            </Stack>
-            <PortalHost />
-        </ThemeProvider>
+        <GestureHandlerRootView style={{flex: 1}}>
+            <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
+                <BottomSheetModalProvider>
+                    <StatusBar style={isDarkColorScheme ? 'light' : 'dark'}/>
+                    <Stack screenOptions={{headerShown: false}}>
+                        <Stack.Screen name="(auth)"/>
+                        <Stack.Screen name="(app)"/>
+                    </Stack>
+                    <PortalHost/>
+                </BottomSheetModalProvider>
+            </ThemeProvider>
+        </GestureHandlerRootView>
     );
 }
 

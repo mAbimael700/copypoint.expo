@@ -11,3 +11,20 @@ export interface SaleProfileResponse {
     quantity: number
     subtotal: number
 }
+export interface SaleProfileResponse {
+  profileId: number;
+  name: string;
+  description: string;
+  unitPrice: number;
+  quantity: number;
+  service: {
+    id: number;
+    name: string;
+  };
+}
+
+export interface SaleProfileInput {
+  profileId: number;
+  serviceId: number;
+  quantity: number;
+}

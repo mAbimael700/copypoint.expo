@@ -58,8 +58,8 @@ export const useSaleProfilesBySale = (
         enabled:
             isAuthenticated &&
             !!params.saleId &&
-            !!currentSale?.id && // Solo ejecutar si hay un servicio seleccionado
             (params.enabled ?? true),
+                    refetchOnWindowFocus: false,
         staleTime: 5 * 60 * 1000, // 5 minutos
         retry: (failureCount, error: any) => {
             // No reintentar si es error de autorización
@@ -72,9 +72,13 @@ export const useSaleProfilesBySale = (
     })
 }
 
-export default function useSaleProfiles() {
+function useSaleProfiles() {
     const {currentSale} = useSaleContext()
     const {currentCopypoint} = useCopypointContext()
+
+    // Log para depuración
+    console.log('useSaleProfiles - currentSale:', currentSale?.id);
+    console.log('useSaleProfiles - currentCopypoint:', currentCopypoint?.id);
 
     const query = useSaleProfilesBySale({
         copypointId: currentCopypoint?.id || 0,
@@ -94,3 +98,5 @@ export default function useSaleProfiles() {
         query,
     }
 }
+
+export default useSaleProfiles;

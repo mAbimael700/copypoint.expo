@@ -2,16 +2,23 @@ import React, {useCallback} from 'react';
 import {ActivityIndicator, FlatList, RefreshControl, View} from 'react-native';
 import {Text} from '~/components/ui/text';
 import {Button} from '~/components/ui/button';
-import {SaleStatus} from '~/features/sales/types/Sale.type';
+import {SaleResponse, SaleStatus} from '~/features/sales/types/Sale.type';
 import useSalesOperations from '~/features/sales/hooks/useSales';
 import SaleItem from "~/features/sales/components/sale-item";
 
-
 interface SalesListProps {
     showPendingOnly?: boolean;
+    onEditSale?: (sale: SaleResponse) => void;
+    onDeleteSale?: (saleId: number | string) => void;
+    onViewSaleDetails?: (sale: SaleResponse) => void;
 }
 
-const SalesList = ({showPendingOnly = false}: SalesListProps) => {
+const SalesList = ({
+                       showPendingOnly = false,
+                       onEditSale,
+                       onDeleteSale,
+                       onViewSaleDetails
+                   }: SalesListProps) => {
     const {
         sales,
         pendingSales,
@@ -36,6 +43,18 @@ const SalesList = ({showPendingOnly = false}: SalesListProps) => {
     const handleRefresh = useCallback(() => {
         refetch();
     }, [refetch]);
+
+    const handleEditSale = useCallback((sale: SaleResponse) => {
+        onEditSale?.(sale);
+    }, [onEditSale]);
+
+    const handleDeleteSale = useCallback((saleId: number | string) => {
+        onDeleteSale?.(saleId);
+    }, [onDeleteSale]);
+
+    const handleViewSaleDetails = useCallback((sale: SaleResponse) => {
+        onViewSaleDetails?.(sale);
+    }, [onViewSaleDetails]);
 
     if (isLoading) {
         return (
@@ -75,12 +94,17 @@ const SalesList = ({showPendingOnly = false}: SalesListProps) => {
 
     return (
         <FlatList
+            showsVerticalScrollIndicator={true}
             data={salesToDisplay}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({item}) => (
                 <SaleItem
+
                     sale={item}
                     onStatusUpdate={handleStatusUpdate}
+                    onEdit={handleEditSale}
+                    onDelete={handleDeleteSale}
+                    onViewDetails={handleViewSaleDetails}
                 />
             )}
             contentContainerStyle={{gap: 4}}

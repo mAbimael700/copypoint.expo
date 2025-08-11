@@ -198,13 +198,15 @@ const CopypointSelector: React.FC<CopypointSelectorProps> = ({
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button 
-          variant="outline" 
-          className={`justify-between ${className}`}
+          variant="outline"
+          className={`flex-row items-center w-full ${className}`}
         >
-          <Text className={currentCopypoint ? "text-foreground" : "text-muted-foreground"}>
-            {currentCopypoint?.name || placeholder}
-          </Text>
-          <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
+          <View style={{ flex: 1 }}>
+            <Text className={currentCopypoint ? "text-foreground" : "text-muted-foreground"}>
+              {currentCopypoint?.name || placeholder}
+            </Text>
+          </View>
+          <ChevronsUpDown className="h-4 w-4 opacity-50" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-full">

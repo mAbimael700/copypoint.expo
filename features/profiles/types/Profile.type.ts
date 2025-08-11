@@ -1,5 +1,10 @@
 import { Service } from "~/features/service/types/Service.type"
-
+export interface ProfileResponse {
+  id: number;
+  name: string;
+  description: string;
+  unitPrice: number;
+}
 export interface ProfileResponse {
     id: number
     name: string

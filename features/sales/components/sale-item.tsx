@@ -1,83 +1,78 @@
-import React from "react";
-import {SaleResponse, SaleStatus} from "~/features/sales/types/Sale.type";
-import {Text} from "~/components/ui/text";
-import {Button} from "~/components/ui/button";
-import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "~/components/ui/card";
-import {View} from "react-native";
-import {formatDate} from "~/lib/utils";
+import React, { useState } from "react";
+import { Pressable, View } from "react-native";
+import { SaleResponse, SaleStatus } from "~/features/sales/types/Sale.type";
+import { getStatusConfig } from "~/features/sales/utils/getStatus";
+import {useSaleBottomSheet} from "~/features/sales/hooks/useSaleBottomSheet";
+import {SaleHeader} from "~/features/sales/components/sale-header";
+import {SaleContent} from "~/features/sales/components/sale-content";
+import {SaleActions} from "~/features/sales/components/sale-actions";
+import {SaleBottomSheet} from "~/features/sales/components/sale-bottom-sheet";
+
 
 interface SaleItemProps {
     sale: SaleResponse;
     onStatusUpdate: (saleId: number | string, status: SaleStatus) => Promise<void>;
+    onEdit?: (sale: SaleResponse) => void;
+    onDelete?: (saleId: number | string) => void;
+    onViewDetails?: (sale: SaleResponse) => void;
 }
 
-const SaleItem = ({sale, onStatusUpdate}: SaleItemProps) => {
+const SaleItem: React.FC<SaleItemProps> = ({
+                                               sale,
+                                               onStatusUpdate,
+                                               onEdit,
+                                               onDelete,
+                                               onViewDetails
+                                           }) => {
     const isPending = sale.status === SaleStatus.PENDING;
+    const { color: statusColor } = getStatusConfig(sale.status);
+    const [isPressed, setIsPressed] = useState<boolean>(false);
+    const { bottomSheetModalRef, handlePresentModal } = useSaleBottomSheet();
 
     return (
-        <View className="mb-4 w-full">
-            <CardHeader>
-                <CardTitle className="flex-row justify-between items-center">
-                    <Text className="text-lg font-semibold">Venta #{sale.id}</Text>
-                    <Text className={`text-sm ${isPending ? 'text-yellow-500' : 'text-green-500'}`}>
-                        {SaleStatus[sale.status]}
-                    </Text>
-                </CardTitle>
-            </CardHeader>
-            <CardContent>
-                <View className="space-y-2">
-
-                    <View className={'flex-row justify-between items-center gap-2'}>
-                        <Text className={'font-bold'}>Vendor:</Text>
-                        <Text>
-                            {sale.userVendor.personalInfo?.firstName} {sale.userVendor.personalInfo?.lastName}
-                        </Text>
-                    </View>
-                    <View className={'flex-row justify-between items-center gap-2'}>
-                        <Text className={'font-bold'}>Total:</Text>
-                        <Text>
-                            {sale.total} {sale.currency}
-                        </Text>
-                    </View>
-                    <View className={'flex-row justify-between items-center gap-2'}>
-                        <Text className={'font-bold'}>Payment method:</Text>
-                        <Text>
-                            {sale.paymentMethod.description}
-                        </Text>
-                    </View>
-                    <View className={'flex-row justify-between items-center gap-2'}>
-                        <Text className={'font-bold'}>Created:</Text>
-                        <Text>
-                            {formatDate(sale.createdAt)}
-
-                        </Text>
-                    </View>
-
+        <>
+            <Pressable
+                onLongPress={handlePresentModal}
+                delayLongPress={200}
+                onPressIn={() => setIsPressed(true)}
+                onPressOut={() => setIsPressed(false)}
+                className="w-full overflow-hidden border-l-4 active:bg-gray-50 border-b border-muted-foreground"
+                style={{
+                    borderLeftColor: statusColor
+                        .replace('text', 'border')
+                        .split('-')
+                        .slice(0, 2)
+                        .join('-'),
+                    opacity: isPressed ? 0.7 : 1
+                }}
+            >
+                <View>
+                    <SaleHeader
+                        saleId={sale.id}
+                        status={sale.status}
+                        createdAt={sale.createdAt}
+                        updatedAt={sale.updatedAt}
+                    />
                 </View>
-            </CardContent>
-            {isPending && (
-                <CardFooter>
-                    <View className="flex-row justify-end space-x-2 w-full">
-                        <Button
-                            variant="destructive"
-                            size="sm"
-                            className="flex-1"
-                            onPress={() => onStatusUpdate(sale.id, SaleStatus.CANCELLED)}
-                        >
-                            <Text className="text-white">Cancelar</Text>
-                        </Button>
-                        <Button
-                            variant="default"
-                            size="sm"
-                            className="flex-1"
-                            onPress={() => onStatusUpdate(sale.id, SaleStatus.COMPLETED)}
-                        >
-                            <Text className="text-white">Completar</Text>
-                        </Button>
-                    </View>
-                </CardFooter>
-            )}
-        </View>
+
+                <SaleContent sale={sale} />
+
+                {isPending && (
+                    <SaleActions
+                        sale={sale}
+                    />
+                )}
+            </Pressable>
+
+            <SaleBottomSheet
+                ref={bottomSheetModalRef}
+                sale={sale}
+                onStatusUpdate={onStatusUpdate}
+                onEdit={onEdit}
+                onDelete={onDelete}
+                onViewDetails={onViewDetails}
+            />
+        </>
     );
 };
 

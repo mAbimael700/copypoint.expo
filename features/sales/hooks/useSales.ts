@@ -281,7 +281,6 @@ export const useSalesOperations = (copypointId?: number | string) => {
 
     // Usar el copypoint del store si no se proporciona uno específico
     const activeCopypointId = copypointId || currentCopypoint?.id;
-    console.log(currentCopypoint)
 
     // Queries
     const salesQuery = useSales({

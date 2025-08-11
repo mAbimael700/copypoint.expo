@@ -13,6 +13,7 @@
     "postinstall": "npx tailwindcss -i ./global.css -o ./node_modules/.cache/nativewind/global.css"
   },
   "dependencies": {
+    "@gorhom/bottom-sheet": "^4",
     "@hookform/resolvers": "^5.1.1",
     "@react-native-async-storage/async-storage": "2.2.0",
     "@react-navigation/native": "7.1.14",
@@ -41,6 +42,7 @@
     "react-dom": "19.0.0",
     "react-hook-form": "7.60.0",
     "react-native": "0.79.5",
+    "react-native-gesture-handler": "^2.28.0",
     "react-native-reanimated": "3.17.5",
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "4.11.1",
@@ -49,6 +51,7 @@
     "tailwind-merge": "2.6.0",
     "tailwindcss": "3.3.5",
     "tailwindcss-animate": "1.0.7",
+    "vaul": "^1.1.2",
     "zod": "^4.0.5",
     "zustand": "5.0.6"
   },

@@ -1,6 +1,6 @@
-import { useRouter } from 'expo-router'
-import { useState, useEffect, useCallback, useRef } from 'react'
-import { BackHandler, Alert } from 'react-native'
+import {useRouter} from 'expo-router'
+import React, {useCallback, useEffect, useRef, useState} from 'react'
+import {Alert, BackHandler} from 'react-native'
 import {
     AlertDialog,
     AlertDialogAction,
@@ -11,7 +11,8 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from '~/components/ui/alert-dialog'
-import { FieldValues, UseFormReturn } from 'react-hook-form'
+import {FieldValues, UseFormReturn} from 'react-hook-form'
+import {Text} from "~/components/ui/text";
 
 interface NavigationGuardOptions {
     title?: string
@@ -188,17 +189,22 @@ export function useNavigationGuard(
         <AlertDialog open={showDialog} onOpenChange={setShowDialog}>
             <AlertDialogContent>
                 <AlertDialogHeader>
-                    <AlertDialogTitle>{title}</AlertDialogTitle>
-                    <AlertDialogDescription>{description}</AlertDialogDescription>
+                    <AlertDialogTitle>
+
+                        <Text>{title}</Text>
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                        <Text>{description}</Text>
+                    </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                     <AlertDialogCancel onPress={handleCancel}>
-                        {cancelText}
+                        <Text>{cancelText}</Text>
                     </AlertDialogCancel>
                     <AlertDialogAction
                         onPress={handleConfirm}
                     >
-                        {confirmText}
+                        <Text>{confirmText}</Text>
                     </AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>
@@ -247,7 +253,7 @@ export function useHookFormNavigationGuard<T extends FieldValues = FieldValues>(
     const [manuallyChanged, setManuallyChanged] = useState(false)
     const isDirty = form.formState.isDirty || manuallyChanged
 
-    const { NavigationGuardDialog, setBlocked, isBlocked } = useNavigationGuard(
+    const {NavigationGuardDialog, setBlocked, isBlocked} = useNavigationGuard(
         isDirty,
         defaultOptions
     )

@@ -1,6 +1,6 @@
 import {Tabs} from 'expo-router'
 import {Ionicons} from '@expo/vector-icons'
-import {BadgeDollarSign, House, SettingsIcon} from "lucide-react-native";
+import {BadgeDollarSign, House, SettingsIcon, PanelBottom} from "lucide-react-native";
 
 export default function AppLayout() {
     return (
@@ -16,7 +16,7 @@ export default function AppLayout() {
             />
 
             <Tabs.Screen
-                name="sales/index"
+                name="sales"
                 options={{
                     title: "Sales",
                     tabBarIcon: ({size, color}) => (
@@ -26,7 +26,7 @@ export default function AppLayout() {
             />
 
             <Tabs.Screen
-                name="settings/index"
+                name="settings"
                 options={{
                     title: "Settings",
                     tabBarIcon: ({size, color}) => (

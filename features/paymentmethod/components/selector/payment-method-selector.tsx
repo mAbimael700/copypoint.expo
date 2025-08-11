@@ -137,14 +137,17 @@ const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
             <DropdownMenuTrigger asChild>
                 <Button
                     variant="outline"
-                    className={`justify-between ${className}`}
+                    className={`flex-row items-center w-full ${className}`}
                     disabled={disabled}
                 >
-                    <Text className={selectedPaymentMethod ? "text-foreground" : "text-muted-foreground"}>
-                        {selectedPaymentMethod?.description || placeholder}
-                    </Text>
-                    <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50"/>
+                    <View style={{ flex: 1 }}>
+                        <Text className={selectedPaymentMethod ? "text-foreground" : "text-muted-foreground"}>
+                            {selectedPaymentMethod?.description || placeholder}
+                        </Text>
+                    </View>
+                    <ChevronsUpDown className="h-4 w-4 opacity-50" />
                 </Button>
+
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-full">
                 {dropdownContent}
