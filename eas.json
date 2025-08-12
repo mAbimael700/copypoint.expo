@@ -1,0 +1,18 @@
+{
+  "cli": {
+    "version": ">= 3.0.0",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "preview": {
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "EXPO_USE_NPM": "1",
+        "PNPM_FLAGS": "--no-frozen-lockfile"
+      }
+    }
+  }
+}

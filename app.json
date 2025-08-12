@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "copypoint.mobile",
-    "slug": "copypoint.mobile",
+    "slug": "copypoint-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -23,7 +23,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.copypoint.mobile"
     },
     "web": {
       "bundler": "metro",
@@ -35,6 +36,13 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "abaea2e7-bc6d-4fa7-accf-f17ed1c476c0"
+      }
+    },
+    "owner": "mabimael87"
   }
 }
